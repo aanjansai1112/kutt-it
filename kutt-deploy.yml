@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: kutt
+    tenant: kutt-dev
+  name: kutt-dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kutt
+      tenant: kutt-dev
+  template:
+    metadata:
+      labels:
+        app: kutt
+        tenant: kutt-dev
+    spec:
+      containers:
+      - env:
+        - name: DB_HOST
+          valueFrom:
+            configMapKeyRef:
+              key: dbHost
+              name: kutt-dev
+        - name: DB_NAME
+          valueFrom:
+            configMapKeyRef:
+              key: dbName
+              name: kutt-dev
+        - name: DB_USER
+          valueFrom:
+            configMapKeyRef:
+              key: dbUser
+              name: kutt-dev
+        - name: DB_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              key: dbPassword
+              name: kutt-dev
+        - name: REDIS_HOST
+          valueFrom:
+            configMapKeyRef:
+              key: redisHost
+              name: kutt-dev
+        - name: REDIS_PORT
+          valueFrom:
+            configMapKeyRef:
+              key: redisPort
+              name: kutt-dev
+        - name: SITE_NAME
+          value: kutt
+        - name: DEFAULT_DOMAIN
+          value: localhost:3000
+        - name: JWT_SECRET
+          value: *****
+        - name: MAIL_HOST
+          value: ""
+        - name: MAIL_PORT
+          value: ""
+        - name: MAIL_USER
+          value: ""
+        - name: MAIL_PASSWORD
+          value: ""
+        image: kutt/kutt
+        imagePullPolicy: Always
+        name: kutt-dev
+        ports:
+        - containerPort: 3000
+          name: kutt
+          protocol: TCP
+      restartPolicy: Always

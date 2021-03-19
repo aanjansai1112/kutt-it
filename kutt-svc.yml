@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: kutt-dev
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: kutt
+  selector:
+    app: kutt
+    tenant: kutt-dev
+  type: LoadBalancer
